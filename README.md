@@ -1,10 +1,10 @@
-Galvanize is a state management library for web applications \([and is totally going to replace Redux, trust me](https://xkcd.com/927/) ^/s\).
+Galvanize is a state management library for web applications \([and is totally going to replace Redux, trust me](https://xkcd.com/927/) <sup>/s</sup>\).
 
-Galvanize's goal is to plug the management hole for component-level state. For global application state, Redux works extremely well, but when an app needs to have component-level state, Redux needs a lot of workarounds to implement cleanly. When using Redux for component state, care must also be taken to properly manage the lifetime of the state. If the state has to be shared between /multiple/ components, it gets even worse. In theory, a programmer could use the react mount and unmount hooks to initialize and reset the state, but often times that isn't the case. Creating or modifying an app's state code shouldn't require extreme amounts of diligence; we use memory-managed languages for this exact reason.
+Galvanize's goal is to plug the management hole for component-level state. For global application state, Redux works extremely well, but when an app needs to have component-level state, Redux needs a lot of workarounds to implement cleanly. When using Redux for component state, care must also be taken to properly manage the lifetime of the state. If the state has to be shared between *multiple* components, it gets even worse. In theory, a programmer could use the react mount and unmount hooks to initialize and reset the state, but often times that isn't the case. Creating or modifying an app's state code shouldn't require extreme amounts of diligence; we use memory-managed languages for this exact reason.
 
 With Galvanize, component state is defined by a single object, similar to Redux. Rather than using reducers, Galvanize uses a series of pure functions to derive state from previous defined values. If deriver B depends on the state A, and state A updates, so will deriver B. This can be used to create state graphs. Every state variable in Galvanize is called a property, and should be interacted with via a proxy object, so that the graph is notified about changes.
 
-The dependencies for all derivers are automatically determined at runtime, although it's also possible to hardcode the dependencies by passing a plain-old-javascript-object to the 
+The dependencies for all derivers are automatically determined at runtime, although it's also possible to hardcode the dependencies by passing a plain-old-javascript-object to the StateGraph constructor.
 
 ## Example State Graph
 
