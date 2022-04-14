@@ -7,7 +7,7 @@
   "license": "ISC",
   "homepage": "https://github.com/memcallen/galvanize#readme",
   "scripts": {
-    "build": "npx tsc && npx webpack",
+    "build": "npx tsc && npx webpack .",
     "watch": "while true; do inotifywait -r src && npm run build; done",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "npm run build"
