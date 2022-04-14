@@ -38,7 +38,7 @@ interface ExplicitlyDerived<TFunc = AutoDerived> {
 /**
  * The various arguments for a StateGraph.
  */
-interface StateGraphArgs {
+export interface StateGraphArgs {
     /**
      * All derivers for this StateGraph.
      */
