@@ -10,7 +10,7 @@
     "build": "npx tsc && npx webpack .",
     "watch": "while true; do inotifywait -r src && npm run build; done",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "[ ! -f ./lib ] && [ ! -f ./.pkg-installed ] && echo > ./.pkg-installed && npm install . && npm run build && rm -r ./node_modules"
+    "install": "( [ ! -f ./lib ] && [ ! -f ./.pkg-installed ] && echo > ./.pkg-installed && npm install . && npm run build && rm -r ./node_modules )"
   },
   "repository": {
     "type": "git",
