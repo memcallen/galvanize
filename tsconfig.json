@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "outDir": "lib",
+        "target": "ES5",
+        "emitDeclarationOnly": true,
+        "declaration": true,
+        "downlevelIteration": true,
+    },
+    "files": [
+        "./src/galvanize.ts"
+    ]
+}
