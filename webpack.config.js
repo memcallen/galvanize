@@ -8,8 +8,10 @@ module.exports = {
   devtool: "source-map",
 
 	output: {
-    library: "galvanize",
-    libraryTarget: "umd",
+    library: {
+      name: "galvanize",
+      type: "umd"
+    },
     filename: "galvanize.js",
 		path: path.resolve(__dirname, 'lib'),
   },
@@ -29,7 +31,6 @@ module.exports = {
         use: [
           'babel-loader',
         ],
-        exclude: /node_modules/,
       },
 		]
 	}
