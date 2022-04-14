@@ -1,7 +1,7 @@
 {
   "name": "galvanize",
   "version": "1.0.0",
-  "description": "",
+  "description": "Galvanize is a state management library for web applications.",
   "main": "lib/galvanize.js",
   "author": "memcallen",
   "license": "ISC",
@@ -10,7 +10,7 @@
     "build": "npx tsc && npx webpack .",
     "watch": "while true; do inotifywait -r src && npm run build; done",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "( [ ! -f ./lib ] && [ ! -f ./.pkg-installed ] && echo \"\" > ./.pkg-installed && npm install . && npm run build && rm -r ./node_modules ) || echo \"SKIP: NON GIT SOURCE\""
+    "install": "[ ! -f ./lib ] && [ ! -f ./.pkg-installed ] && echo > ./.pkg-installed && npm install . && npm run build && rm -r ./node_modules"
   },
   "repository": {
     "type": "git",
@@ -30,8 +30,5 @@
     "webpack": "^5.71.0",
     "webpack-cli": "^4.9.2",
     "core-js": "^3.21.1"
-  },
-  "files": [
-    "lib/galv"
-  ]
+  }
 }
