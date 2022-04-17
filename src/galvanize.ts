@@ -292,9 +292,9 @@ export class StateGraph {
      * A plain-old-javascript-object containing all the state in this graph.
      * May have getters & setters set.
      */
-    readonly state: StateMap = {};
+    public readonly state: StateMap = {};
 
-    push_default_mode: "fast" | "accurate" = "accurate";
+    public push_default_mode: "fast" | "accurate" = "accurate";
 
     private derivers: {[name: StateKey]: ExplicitlyDerived} = {};
     private deps: {[name: StateKey]: StateKey[]} = {};
@@ -307,45 +307,53 @@ export class StateGraph {
 
     constructor(args: StateGraphArgs) {
         this.derivers = {
-            ...Object.fromEntries(Object.entries(args.derivers || {}).map(([name, value]) => {
-                if(typeof(value) === "function") {
-                    return [name, ExtractDeriver(value)];
-                } else {
-                    return [name, value];
-                }
-            })),
+            ...Object.fromEntries(Object.entries(args.derivers || {})
+                .filter(([_, value]) => Boolean(value))
+                .map(([name, value]) => {
+                    if(typeof(value) === "function") {
+                        return [name, ExtractDeriver(value)];
+                    } else {
+                        return [name, value];
+                    }
+                })
+            ),
             
-            ...Object.fromEntries(Object.entries(args.requests || {}).map(([name, value]) => {
-                if(typeof(value) === "function") {
-                    return [name, {
-                        ...ExtractDeriver(value),
-                        is_request: true
-                    }];
-                } else {
-                    return [name, {
-                        ...value,
-                        is_request: true
-                    }];
-                }
-            }))
+            ...Object.fromEntries(Object.entries(args.requests || {})
+                .filter(([_, value]) => Boolean(value))
+                .map(([name, value]) => {
+                    if(typeof(value) === "function") {
+                        return [name, {
+                            ...ExtractDeriver(value),
+                            is_request: true
+                        }];
+                    } else {
+                        return [name, {
+                            ...value,
+                            is_request: true
+                        }];
+                    }
+                })
+            )
         };
 
-        Object.entries(args.properties || {}).forEach(([name, value]) => {
-            Object.defineProperties(this.state, {
-                [name]: {
-                    get: () => value.value,
-                    set: (newValue) => value.value = newValue,
-                    enumerable: true
-                }
-            });
-            this.extern[name] = value;
-            value.watch(() => {
-                this.dispatch_change(name);
+        Object.entries(args.properties || {})
+            .filter(([_, value]) => Boolean(value))
+            .forEach(([name, value]) => {
+                Object.defineProperties(this.state, {
+                    [name]: {
+                        get: () => value.value,
+                        set: (newValue) => value.value = newValue,
+                        enumerable: true
+                    }
+                });
+                this.extern[name] = value;
+                value.watch(() => {
+                    this.dispatch_change(name);
 
-                const d = this.deps[name];
-                d && this.push(Object.fromEntries(d.map(dep => [dep, this.state[dep]])));
+                    const d = this.deps[name];
+                    d && this.push(Object.fromEntries(d.map(dep => [dep, this.state[dep]])));
+                });
             });
-        });
 
         for (const name in this.derivers) {
             if (Object.prototype.hasOwnProperty.call(this.derivers, name)) {
