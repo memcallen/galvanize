@@ -199,6 +199,7 @@ export class ObjectProperty implements Property {
      * Immediately invokes any bound `PropertyWatcher`s.
      */
     on_changed() {
+        this.onset && this.onset(this);
         this.watchers.forEach(w => w(this));
     }
 
@@ -260,6 +261,26 @@ export class NavigatedProperty extends WrappedProperty implements Property {
 
     get propname() {
         return this.key;
+    }
+
+    /**
+     * Deletes this object from the wrapped property using a delete statement.
+     */
+    delete() {
+        const obj = this.base.value;
+
+        delete obj[this.key];
+
+        this.base.value = obj;
+    }
+
+    /**
+     * Deletes this object from the wrapped property using `value.filter`.
+     */
+    deleteByFilter() {
+        const { value } = this;
+
+        this.base.value = this.base.value.filter(x => x !== value);
     }
 }
 
